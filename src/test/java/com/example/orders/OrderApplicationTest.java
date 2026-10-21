@@ -25,6 +25,15 @@ class OrderApplicationTest {
     }
 
     @Test
+    void returnsProductDetailsAndPurchaseTotals() throws Exception {
+        mvc.perform(get("/api/customers/42/orders/summaries"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[1].items[0].productName").value("USB-C dock"))
+                .andExpect(jsonPath("$[1].total").value(188.90));
+    }
+
+    @Test
     void returnsAnEmptyListForUnknownCustomers() throws Exception {
         mvc.perform(get("/api/customers/999/orders"))
                 .andExpect(status().isOk())
