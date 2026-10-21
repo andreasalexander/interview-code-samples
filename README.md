@@ -22,6 +22,11 @@ java -jar target/order-service-0.0.1-SNAPSHOT.jar
 
 The server listens on port 8080. The database is recreated at each start.
 
+On Windows, older JDK 17 builds may fail to establish a loopback connection when
+the temporary directory path is long. Use an updated JDK 17, or supply a shorter
+existing directory with `java -Djdk.net.unixdomain.tmpdir=target -jar
+target/order-service-0.0.1-SNAPSHOT.jar` from the repository root.
+
 ```sh
 curl http://localhost:8080/api/customers/42/orders
 ```
@@ -30,6 +35,13 @@ The order listing returns up to 20 recent orders, newest ID first. Unknown
 customers receive an empty list. Sample customers are 42, 84 and 99. Customer
 contact email is optional. This local interview application has no authentication;
 the supplied customer ID represents the customer selected by an internal caller.
+
+The summary endpoint includes product details and purchase totals for the same
+recent orders:
+
+```sh
+curl http://localhost:8080/api/customers/42/orders/summaries
+```
 
 ## Code review exercise
 
